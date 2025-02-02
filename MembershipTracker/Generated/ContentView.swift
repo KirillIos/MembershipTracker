@@ -44,6 +44,3 @@ struct MainTabView: View {
     }
 }
 
-#Preview {
-    ContentView()
-}

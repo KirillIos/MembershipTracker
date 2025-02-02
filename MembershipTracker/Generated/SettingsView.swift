@@ -32,7 +32,9 @@ struct SettingsView: View {
     }
     
     private func rateApp() {
-        requestReview()
+        guard let writeReviewURL = URL(string: "https://apps.apple.com/app/idYOUR_APP_ID?action=write-review")
+        else { return }
+        UIApplication.shared.open(writeReviewURL, options: [:], completionHandler: nil)
     }
     
     private func shareApp() {
