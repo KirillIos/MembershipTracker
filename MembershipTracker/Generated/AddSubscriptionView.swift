@@ -11,6 +11,7 @@ struct AddSubscriptionView: View {
     @State private var category = Subscription.SubscriptionCategory.entertainment
     @State private var notes = ""
     @State private var showingSuccessToast = false
+    @State private var showingValidationAlert = false
     
     var body: some View {
         NavigationView {
@@ -62,24 +63,37 @@ struct AddSubscriptionView: View {
             .overlay(
                 ToastView(isShowing: $showingSuccessToast)
             )
+            .alert("Invalid Data", isPresented: $showingValidationAlert) {
+                Button("OK", role: .cancel) { }
+            } message: {
+                Text("Please enter subscription name and amount before saving.")
+            }
         }
     }
     
+    private func isValid() -> Bool {
+        !name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty && amount > 0
+    }
+    
     private func saveSubscription() {
-        let subscription = Subscription(
-            name: name,
-            amount: amount,
-            nextPaymentDate: nextPaymentDate,
-            frequency: frequency,
-            category: category,
-            notes: notes
-        )
-        
-        store.addSubscription(subscription)
-        showingSuccessToast = true
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-            isPresented = false
+        if isValid() {
+            let subscription = Subscription(
+                name: name,
+                amount: amount,
+                nextPaymentDate: nextPaymentDate,
+                frequency: frequency,
+                category: category,
+                notes: notes
+            )
+            
+            store.addSubscription(subscription)
+            showingSuccessToast = true
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                isPresented = false
+            }
+        } else {
+            showingValidationAlert = true
         }
     }
 }
@@ -112,4 +126,8 @@ struct ToastView: View {
             }
         }
     }
+}
+
+#Preview {
+    AddSubscriptionView(store: SubscriptionStore(), isPresented: .constant(true))
 }
