@@ -11,10 +11,10 @@ struct OnboardingView: View {
             description: "Keep all your subscriptions organized in one place"
         ),
         OnboardingPage(
-            title: "Get reminders for upcoming payments",
-            image: "bell.fill",
-            description: "Never miss a payment with timely notifications"
-        ),
+                    title: "User-friendly interface",
+                    image: "checkmark.circle.fill",
+                    description: "Easy log, edit or delete subscriptions"
+                ),
         OnboardingPage(
             title: "Stay organized and control your spending",
             image: "chart.pie.fill",
